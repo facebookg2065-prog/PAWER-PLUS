@@ -6,11 +6,13 @@ import { Star, ShoppingCart, ArrowRight, Shield, Target, Scale } from 'lucide-re
 interface ProductDetailsProps {
   product: Product;
   onBack: () => void;
+  onAddToCart: () => void;
+  onBuyNow: () => void;
 }
 
-export const ProductDetails: React.FC<ProductDetailsProps> = ({ product, onBack }) => {
+export const ProductDetails: React.FC<ProductDetailsProps> = ({ product, onBack, onAddToCart, onBuyNow }) => {
   return (
-    <div className="min-h-screen bg-slate-950 p-4 lg:p-8 pt-24 animate-fade-in">
+    <div className="min-h-screen bg-slate-950 p-4 lg:p-8 pt-12 lg:pt-24 animate-fade-in">
       <button 
         onClick={onBack}
         className="flex items-center text-gray-400 hover:text-white mb-8 transition-colors group"
@@ -19,7 +21,7 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({ product, onBack 
         العودة للمتجر
       </button>
 
-      <div className="bg-slate-900/50 border border-slate-800 rounded-2xl overflow-hidden grid grid-cols-1 lg:grid-cols-2 gap-0 lg:gap-8">
+      <div className="bg-slate-900/50 border border-slate-800 rounded-2xl overflow-hidden grid grid-cols-1 lg:grid-cols-2 gap-0 lg:gap-8 shadow-2xl">
         
         {/* Image Section */}
         <div className="relative h-[400px] lg:h-auto bg-slate-950 p-8 flex items-center justify-center overflow-hidden group">
@@ -57,17 +59,17 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({ product, onBack 
 
           {/* Specs Grid */}
           <div className="grid grid-cols-3 gap-4 mb-8">
-             <div className="bg-slate-950 p-4 rounded-xl border border-slate-800 text-center">
+             <div className="bg-slate-950 p-4 rounded-xl border border-slate-800 text-center hover:border-red-600/30 transition-colors">
                 <Target className="w-6 h-6 text-red-500 mx-auto mb-2" />
                 <div className="text-xs text-gray-500">المدى الفعال</div>
                 <div className="font-bold text-white">800m</div>
              </div>
-             <div className="bg-slate-950 p-4 rounded-xl border border-slate-800 text-center">
+             <div className="bg-slate-950 p-4 rounded-xl border border-slate-800 text-center hover:border-red-600/30 transition-colors">
                 <Scale className="w-6 h-6 text-red-500 mx-auto mb-2" />
                 <div className="text-xs text-gray-500">الوزن</div>
                 <div className="font-bold text-white">3.2kg</div>
              </div>
-             <div className="bg-slate-950 p-4 rounded-xl border border-slate-800 text-center">
+             <div className="bg-slate-950 p-4 rounded-xl border border-slate-800 text-center hover:border-red-600/30 transition-colors">
                 <Shield className="w-6 h-6 text-red-500 mx-auto mb-2" />
                 <div className="text-xs text-gray-500">المتانة</div>
                 <div className="font-bold text-white">Mil-Spec</div>
@@ -90,11 +92,11 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({ product, onBack 
              </div>
 
              <div className="grid grid-cols-2 gap-4">
-                <button className="bg-red-600 hover:bg-red-700 text-white font-bold py-4 rounded-xl shadow-lg shadow-red-900/20 flex items-center justify-center gap-2 transition-all transform hover:-translate-y-1">
+                <button onClick={onBuyNow} className="bg-red-600 hover:bg-red-700 text-white font-bold py-4 rounded-xl shadow-lg shadow-red-900/20 flex items-center justify-center gap-2 transition-all transform hover:-translate-y-1">
                     <ShoppingCart className="w-5 h-5" />
                     شراء الآن
                 </button>
-                <button className="bg-slate-800 hover:bg-slate-700 text-white font-bold py-4 rounded-xl border border-slate-700 transition-colors">
+                <button onClick={onAddToCart} className="bg-slate-800 hover:bg-slate-700 text-white font-bold py-4 rounded-xl border border-slate-700 transition-colors">
                     إضافة للسلة
                 </button>
              </div>

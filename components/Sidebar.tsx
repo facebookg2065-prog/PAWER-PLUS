@@ -1,10 +1,16 @@
+
 import React from 'react';
 import { CATEGORIES } from '../constants';
-import { Filter } from 'lucide-react';
+import { Filter, Grid } from 'lucide-react';
 
-export const Sidebar: React.FC = () => {
+interface SidebarProps {
+  selectedCategory: string;
+  onSelectCategory: (category: string) => void;
+}
+
+export const Sidebar: React.FC<SidebarProps> = ({ selectedCategory, onSelectCategory }) => {
   return (
-    <aside className="hidden lg:block w-64 bg-slate-900 border-l border-slate-800 h-full min-h-screen sticky top-20 p-6">
+    <aside className="w-full lg:w-64 bg-slate-900 border-l border-slate-800 lg:min-h-screen lg:sticky lg:top-20 p-6">
       <div className="flex items-center gap-2 mb-8 text-red-500">
         <Filter className="w-5 h-5" />
         <h3 className="text-xl font-bold text-white">تصفية المنتجات</h3>
@@ -15,10 +21,26 @@ export const Sidebar: React.FC = () => {
         <div>
           <h4 className="text-sm uppercase tracking-wider text-gray-500 font-bold mb-4">الأقسام</h4>
           <ul className="space-y-2">
+            <li>
+                <button 
+                    onClick={() => onSelectCategory('all')}
+                    className={`flex items-center w-full p-2 rounded-lg transition-colors group ${selectedCategory === 'all' ? 'bg-red-600/10 text-red-500' : 'text-gray-300 hover:bg-white/5 hover:text-red-400'}`}
+                >
+                  <span className={`ml-3 ${selectedCategory === 'all' ? 'text-red-500' : 'text-gray-500 group-hover:text-red-500'}`}>
+                    <Grid className="w-5 h-5" />
+                  </span>
+                  <span>الكل</span>
+                </button>
+            </li>
             {CATEGORIES.map((cat) => (
               <li key={cat.id}>
-                <button className="flex items-center w-full p-2 rounded-lg text-gray-300 hover:bg-white/5 hover:text-red-400 transition-colors group">
-                  <span className="ml-3 text-gray-500 group-hover:text-red-500 transition-colors">{cat.icon}</span>
+                <button 
+                    onClick={() => onSelectCategory(cat.id)}
+                    className={`flex items-center w-full p-2 rounded-lg transition-colors group ${selectedCategory === cat.id ? 'bg-red-600/10 text-red-500' : 'text-gray-300 hover:bg-white/5 hover:text-red-400'}`}
+                >
+                  <span className={`ml-3 ${selectedCategory === cat.id ? 'text-red-500' : 'text-gray-500 group-hover:text-red-500'}`}>
+                      {cat.icon}
+                  </span>
                   <span>{cat.name}</span>
                 </button>
               </li>
