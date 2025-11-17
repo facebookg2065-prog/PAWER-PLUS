@@ -1,3 +1,4 @@
+
 import { Product } from './types';
 import { Crosshair, Shield, Zap, ShoppingBag } from 'lucide-react';
 import React from 'react';
@@ -5,6 +6,7 @@ import React from 'react';
 export const FEATURED_PRODUCTS: Product[] = [
   {
     id: '1',
+    userId: 'admin',
     name: 'M4A1 Tactical Custom',
     price: 1200,
     category: 'rifles',
@@ -14,6 +16,7 @@ export const FEATURED_PRODUCTS: Product[] = [
   },
   {
     id: '2',
+    userId: 'admin',
     name: 'Glock 19 Gen 5',
     price: 550,
     category: 'pistols',
@@ -23,6 +26,7 @@ export const FEATURED_PRODUCTS: Product[] = [
   },
   {
     id: '3',
+    userId: 'admin',
     name: 'AWM Sniper Rifle',
     price: 4500,
     category: 'rifles',
@@ -32,6 +36,7 @@ export const FEATURED_PRODUCTS: Product[] = [
   },
   {
     id: '4',
+    userId: 'admin',
     name: 'Tactical Vest Level 4',
     price: 300,
     category: 'accessories',
@@ -41,6 +46,7 @@ export const FEATURED_PRODUCTS: Product[] = [
   },
   {
     id: '5',
+    userId: 'admin',
     name: 'Thermal Scope X200',
     price: 899,
     category: 'accessories',

@@ -2,25 +2,26 @@
 import React from 'react';
 import { Sidebar } from './Sidebar';
 import { ProductCard } from './ProductCard';
-import { FEATURED_PRODUCTS } from '../constants';
 import { Product } from '../types';
 
 interface StoreProps {
+  products: Product[];
   onProductClick: (product: Product) => void;
   selectedCategory: string;
   onCategorySelect: (category: string) => void;
+  searchQuery: string;
 }
 
-export const Store: React.FC<StoreProps> = ({ onProductClick, selectedCategory, onCategorySelect }) => {
-  const filteredProducts = selectedCategory === 'all' 
-    ? FEATURED_PRODUCTS 
-    : FEATURED_PRODUCTS.filter(p => p.category === selectedCategory);
-
-  // Duplicate for visual filling if needed, but usually filter results are enough
-  const displayProducts = [...filteredProducts];
+export const Store: React.FC<StoreProps> = ({ products, onProductClick, selectedCategory, onCategorySelect, searchQuery }) => {
+  const filteredProducts = products.filter(p => {
+      const matchesCategory = selectedCategory === 'all' || p.category === selectedCategory;
+      const matchesSearch = p.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                            p.description.toLowerCase().includes(searchQuery.toLowerCase());
+      return matchesCategory && matchesSearch;
+  });
 
   return (
-    <div className="min-h-screen bg-slate-950 flex flex-col lg:flex-row">
+    <div className="min-h-screen bg-slate-950 flex flex-col lg:flex-row animate-fade-in">
       <Sidebar selectedCategory={selectedCategory} onSelectCategory={onCategorySelect} />
       
       <main className="flex-1 p-6 lg:p-10">
@@ -37,9 +38,9 @@ export const Store: React.FC<StoreProps> = ({ onProductClick, selectedCategory, 
         </div>
 
         {/* Grid */}
-        {displayProducts.length > 0 ? (
+        {filteredProducts.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {displayProducts.map(product => (
+            {filteredProducts.map(product => (
                 <ProductCard 
                     key={product.id} 
                     product={product} 
@@ -49,7 +50,7 @@ export const Store: React.FC<StoreProps> = ({ onProductClick, selectedCategory, 
             </div>
         ) : (
             <div className="text-center py-20 text-gray-500">
-                <p>لا توجد منتجات في هذا القسم حالياً.</p>
+                <p>لا توجد منتجات تطابق بحثك.</p>
             </div>
         )}
       </main>

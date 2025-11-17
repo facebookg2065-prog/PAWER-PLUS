@@ -12,6 +12,7 @@ import { Sell } from './components/Sell';
 import { Auth } from './components/Auth';
 import { Toast } from './components/Toast';
 import { ViewState, Product, CartItem, UserRole } from './types';
+import { FEATURED_PRODUCTS } from './constants';
 
 const App: React.FC = () => {
   const [currentView, setCurrentView] = useState<ViewState>('home');
@@ -21,6 +22,9 @@ const App: React.FC = () => {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
+  
+  // Global Products State (Dynamic)
+  const [products, setProducts] = useState<Product[]>(FEATURED_PRODUCTS);
 
   const showToast = (message: string, type: 'success' | 'error' = 'success') => {
     setToast({ message, type });
@@ -35,6 +39,25 @@ const App: React.FC = () => {
       } else {
           setCurrentView('dashboard');
           showToast('تم تسجيل الدخول بنجاح', 'success');
+      }
+  };
+
+  const handleAddProduct = (newProductData: Omit<Product, 'id'>) => {
+      const newProduct: Product = {
+          ...newProductData,
+          id: Date.now().toString(), // Generate a simple unique ID
+          userId: 'current-user', // Assign to the currently logged in user simulation
+      };
+      
+      setProducts(prev => [newProduct, ...prev]);
+      showToast('تم نشر المنتج بنجاح!', 'success');
+      setCurrentView('store');
+  };
+
+  const handleDeleteProduct = (productId: string) => {
+      if (window.confirm('هل أنت متأكد من رغبتك في حذف هذا المنتج؟')) {
+          setProducts(prev => prev.filter(p => p.id !== productId));
+          showToast('تم حذف المنتج بنجاح.', 'success');
       }
   };
 
@@ -94,9 +117,10 @@ const App: React.FC = () => {
         
         {currentView === 'store' && (
           <Store 
+            products={products}
             onProductClick={handleProductClick} 
             selectedCategory={selectedCategory}
-            onCategorySelect={setSelectedCategory}
+            onCategorySelect={handleCategorySelect}
             searchQuery={searchQuery}
           />
         )}
@@ -113,7 +137,12 @@ const App: React.FC = () => {
             />
         )}
         
-        {currentView === 'dashboard' && <UserDashboard />}
+        {currentView === 'dashboard' && (
+            <UserDashboard 
+                userProducts={products.filter(p => p.userId === 'current-user')}
+                onDeleteProduct={handleDeleteProduct}
+            />
+        )}
         
         {currentView === 'admin' && <AdminDashboard />}
         
@@ -132,7 +161,7 @@ const App: React.FC = () => {
             setCurrentView('dashboard');
         }} />}
         
-        {currentView === 'sell' && <Sell />}
+        {currentView === 'sell' && <Sell onAddProduct={handleAddProduct} />}
         
         {(currentView === 'login' || currentView === 'register') && (
           <Auth view={currentView} setView={setCurrentView} onLogin={handleLogin} />

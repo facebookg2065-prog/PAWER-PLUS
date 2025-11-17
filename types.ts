@@ -3,9 +3,10 @@ import React from 'react';
 
 export interface Product {
   id: string;
+  userId?: string; // Added userId to link product to user
   name: string;
   price: number;
-  category: 'rifles' | 'pistols' | 'accessories';
+  category: 'rifles' | 'pistols' | 'accessories' | 'armor';
   image: string;
   rating: number;
   description: string;
